@@ -1,0 +1,14 @@
+# Byte-compiled / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+# IDE Files
+
+.idea
+.vscode
+~                                                                               
+~                                                                               
+~                                                                               
+~        
