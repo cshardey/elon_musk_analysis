@@ -1,32 +1,23 @@
-import re
-
-import matplotlib
+import matplotlib.pyplot as plt
 import nltk
-import numpy as np
 import pandas as pd
-import plotly.io
 # plotting
 import seaborn as sns
-from matplotlib import patches
-from nltk import RegexpTokenizer
+from gensim.parsing.preprocessing import STOPWORDS
 from nltk.corpus import stopwords
-from nltk.sentiment import sentiment_analyzer, SentimentIntensityAnalyzer
-from wordcloud import WordCloud
-import matplotlib.pyplot as plt
+from nltk.sentiment import SentimentIntensityAnalyzer
 # nltk
 from nltk.stem import WordNetLemmatizer
-from gensim.parsing.preprocessing import STOPWORDS
+from wordcloud import WordCloud
+
 # sklearn
-from sklearn.svm import LinearSVC
-from sklearn.naive_bayes import BernoulliNB
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics import confusion_matrix, classification_report
 
 nltk.download('wordnet')
 nltk.download('omw-1.4')
 df = pd.read_csv('tt.csv')
+
+# print length of df
+print(len(df))
 
 
 # Remove stop words from dataframe text field
@@ -160,10 +151,25 @@ def generate_wordcloud(df):
     positive_words = positive_words['text']
     # select text column of the dataframe
 
-    print(positive_words.head(20))
     plt.figure(figsize=(20, 20))
     wc = WordCloud(background_color='white', max_words=2000, max_font_size=50, scale=3,
                    random_state=42).generate(' '.join(str(v) for v in positive_words))
+    plt.imshow(wc)
+    plt.axis('off')
+    plt.show()
+
+def generate_wordcloud_negative(df):
+    # create a word cloud from da
+    # pick positive words
+
+    # SELECT ONLY POSITIVE WORDS
+    negative_words = df[df['sentiment'] < 0.0]
+    negative_words = negative_words['text']
+    # select text column of the dataframe
+
+    plt.figure(figsize=(20, 20))
+    wc = WordCloud(background_color='white', max_words=2000, max_font_size=50, scale=3,
+                   random_state=42).generate(' '.join(str(v) for v in negative_words))
     plt.imshow(wc)
     plt.axis('off')
     plt.show()
@@ -224,7 +230,6 @@ def print_word_count(dataset):
     # rearrange list  by highest count
     top_1000 = sorted(top_20_words, key=lambda x: x[1], reverse=True)[:1000]
 
-    print(top_20_words)
 
     top_words = sorted(top_20_words, key=lambda x: x[1], reverse=True)
 
@@ -249,7 +254,6 @@ def print_word_count(dataset):
 
 
 new_df = remove_stop_words(df)
-print('Stop words removed', new_df.head(10))
 
 def_art = remove_definite_articles(new_df)
 print('Definite articles removed', def_art.head(10))
@@ -281,6 +285,5 @@ stem_df = stemming_on_text(steam_df)
 
 print('Stemmed on text', stem_df.head(10))
 
-print_word_count(stem_df)
 
 generate_wordcloud(stem_df)

@@ -26,10 +26,8 @@ def tweet_data():
 
     # print length of iterator
 
-
-
     # create a dataframe with the tweets
-    df = pd.DataFrame(columns=['tweetId', 'text' ])
+    df = pd.DataFrame(columns=['tweetId', 'text'])
     # loop through the tweets and add them to the dataframe
     for tweet in tweets:
         df = df.append(
@@ -52,19 +50,15 @@ def tweet_data():
     return df
 
 
-
-
 def token_sentiment_analysis(df):
     # remove stopwords from tweet text
     # create sentiment column and  fill it NEGATIVE, NEUTRAL, POSITIVE
     # create a new dataframe with the sentiment column
     sia = SentimentIntensityAnalyzer()
 
-    
     text = df.text.tolist()
 
-
-  # join the list and lowercase all the words
+    # join the list and lowercase all the words
     text = ' '.join(text).lower()
 
     wordcloud = WordCloud(stopwords=STOPWORDS,
@@ -80,20 +74,10 @@ def token_sentiment_analysis(df):
 
 
 def clean_tweet_data(dataframe):
-
-
     # Remove all html characters using beautifulsoup
     dataframe['text'] = dataframe['text'].apply(lambda x: BeautifulSoup(x, "lxml").get_text())
 
-
-
-
     return dataframe
-
-
-
-
-
 
 
 token_sentiment_analysis(clean_tweet_data(dataframe=pd.read_csv('tc.csv')))
